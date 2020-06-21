@@ -36,28 +36,15 @@ typedef int64_t			i64;
 #define ABS(n)			((n)<0? -(n):(n))
 #define ZFLOOR(n)			((n)<0?    0:(n))
 
-typedef SDL_Event			Event;
-typedef SDL_Rect 			Rect;
-typedef SDL_Color 		Color;
-typedef SDL_Surface 		Img;
-typedef SDL_Keycode 		Key;
-typedef SDL_BlendMode		BlendMode;
-#define BLEND_NONE		SDL_BLENDMODE_NONE
-#define BLEND_ALPHA		SDL_BLENDMODE_BLEND
-#define BLEND_ADD			SDL_BLENDMODE_ADD
-#define BLEND_MOD			SDL_BLENDMODE_MOD
-
-typedef enum{
-	FULLSCREEN	=		SDL_WINDOW_FULLSCREEN,
-	BORDERLESS	=		SDL_WINDOW_FULLSCREEN_DESKTOP,
-	WINDOWED	=		0
-}WindowMode;
-
 typedef union{
 	int arr[2];
 	struct{
 		int x;
 		int y;
+	};
+	struct{
+		int pos;
+		int neg;
 	};
 }Coord;
 
