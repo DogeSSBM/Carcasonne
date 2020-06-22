@@ -10,11 +10,11 @@ float randRange(float a, float b)
 	return ((b-a)*((float)rand()/RAND_MAX))+a;
 }
 
-void init()
+void init(const uint winXlen, const uint winYlen)
 {
 	srand(time(NULL));
-	// gfx_init(winXlen, winYlen);
-	// img_init();
-	// text_init();
+	gfx_init(winXlen, winYlen);
+	img_init();
+	text_init();
 	net_init();
 }

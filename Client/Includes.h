@@ -13,9 +13,19 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_net.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 
 #include "Types.h"
 #include "GetInt.h"
+#include "Colors.h"
+#include "Graphics.h"
+#include "Timing.h"
+#include "Text.h"
+#include "Image.h"
 #include "CLI.h"
 #include "Net.h"
 #include "DogeUtil.h"
+
+
+#include "Events.h"

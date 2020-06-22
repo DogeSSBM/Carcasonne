@@ -5,7 +5,7 @@
 
 int main(int argc, char const *argv[])
 {
-	init();
+	init(800, 600);
 
 	IPaddress sIp = {0};
 	TCPsocket sSock = {0};
