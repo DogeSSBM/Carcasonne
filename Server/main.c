@@ -38,19 +38,12 @@ int main(int argc, char const *argv[])
 		);
 		exit(1);
 	}
-	u32 tempIp = nativeI32(cIp->host);
-	printf("Client info -\n");
-		printf(
-		"\tIP: %d.%d.%d.%d\n",
-		(tempIp>>(8*3))&0xff,
-		(tempIp>>(8*2))&0xff,
-		(tempIp>>(8*1))&0xff,
-		(tempIp>>(8*0))&0xff
-	);
-		printf(
-		"\tPort: %d\n",
-		nativeI16(cIp->port)
-	);
+
+	printf("Client info -\n\tIP: ");
+	printIp(cIp->host);
+
+	printf("\tPort: ");
+	printPort(cIp->port);
 
 	while(1){
 		char buffer[BUFFERLEN] = {0};

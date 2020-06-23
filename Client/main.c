@@ -22,6 +22,8 @@ int main(int argc, char const *argv[])
 		SERVER,
 		PORT
 	);
+	printf("Press Enter to connect\n");
+	while(fgetc(stdin) != '\n');
 	if(!(sSock = SDLNet_TCP_Open(&sIp))){
 		printf(
 			"SDLNet_TCP_Open error:\n\t%s\n",
