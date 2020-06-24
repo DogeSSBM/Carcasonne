@@ -34,6 +34,24 @@ void net_init(void)
 	atexit(SDLNet_Quit);
 }
 
+IPaddress tcpResolveHost(const char *hostname, const u16 port)
+{
+	IPaddress ip = {0};
+	if(SDLNet_ResolveHost(&ip, hostname, port) == -1){
+		printf(
+			"SDLNet_ResolveHost error:\n\t%s\n",
+			SDLNet_GetError()
+		);
+		exit(1);
+	}
+	printf(
+		"Server hostname %s resolved into IPaddress type over port %d\n",
+		hostname,
+		port
+	);
+	return ip;
+}
+
 IPaddress tcpGetLocalIp(const u16 port)
 {
 	IPaddress addr = {0};

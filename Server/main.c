@@ -8,7 +8,6 @@ int main(int argc, char const *argv[])
 
 	TCPsocket sSock = tcpStartServer(PORT);
 	TCPsocket cSock = tcpWaitForClient(sSock);
-	IPaddress *cIp = NULL;
 
 	while(1){
 		char buffer[BUFFERLEN] = {0};

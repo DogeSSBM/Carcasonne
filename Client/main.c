@@ -7,23 +7,12 @@ int main(int argc, char const *argv[])
 {
 	init(800, 600);
 
-	IPaddress sIp = {0};
+	IPaddress sIp = tcpResolveHost(SERVER, PORT);
 	TCPsocket sSock = {0};
 
-	if(SDLNet_ResolveHost(&sIp, SERVER, PORT) == -1){
-		printf(
-			"SDLNet_ResolveHost error:\n\t%s\n",
-			SDLNet_GetError()
-		);
-		exit(1);
-	}
-	printf(
-		"Server hostname %s resolved into IPaddress type over port %d\n",
-		SERVER,
-		PORT
-	);
 	printf("Press Enter to connect\n");
 	while(fgetc(stdin) != '\n');
+	
 	if(!(sSock = SDLNet_TCP_Open(&sIp))){
 		printf(
 			"SDLNet_TCP_Open error:\n\t%s\n",
