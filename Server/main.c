@@ -6,44 +6,9 @@ int main(int argc, char const *argv[])
 {
 	init();
 
-	IPaddress sIp = {0};
-	TCPsocket sSock = {0};
+	TCPsocket sSock = tcpStartServer(PORT);
+	TCPsocket cSock = tcpWaitForClient(sSock);
 	IPaddress *cIp = NULL;
-	TCPsocket cSock = {0};
-
-	if(SDLNet_ResolveHost(&sIp, NULL, PORT) == -1){
-		printf(
-			"SDLNet_ResolveHost error:\n\t%s\n",
-			SDLNet_GetError()
-		);
-		exit(1);
-	}
-	printf("Port %d resolved into IPaddress type\n", PORT);
-	if(!(sSock = SDLNet_TCP_Open(&sIp))){
-		printf(
-			"SDLNet_TCP_Open error:\n\t%s\n",
-			SDLNet_GetError()
-		);
-		exit(1);
-	}
-	printf("Server socket (sSock) opened for listening\n");
-	while(!(cSock = SDLNet_TCP_Accept(sSock))){
-		SDL_Delay(100);
-	}
-	printf("Client connected\n");
-	if(!(cIp = SDLNet_TCP_GetPeerAddress(cSock))){
-		printf(
-			"SDLNet_TCP_GetPeerAddress error:\n\t%s\n",
-			SDLNet_GetError()
-		);
-		exit(1);
-	}
-
-	printf("Client info -\n\tIP: ");
-	printIp(cIp->host);
-
-	printf("\tPort: ");
-	printPort(cIp->port);
 
 	while(1){
 		char buffer[BUFFERLEN] = {0};

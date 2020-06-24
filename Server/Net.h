@@ -33,3 +33,69 @@ void net_init(void)
 	printf("Adding SDLNet_Quit to atexit()\n");
 	atexit(SDLNet_Quit);
 }
+
+IPaddress tcpGetLocalIp(const u16 port)
+{
+	IPaddress addr = {0};
+	if(SDLNet_ResolveHost(&addr, NULL, port) == -1){
+		printf("Could not resolve server hostname\n");
+		printf(
+			"SDLNet_ResolveHost error:\n\t%s\n",
+			SDLNet_GetError()
+		);
+		exit(1);
+	}
+	printf("Got servers ip\n");
+
+	return addr;
+}
+
+TCPsocket tcpOpen(IPaddress addr)
+{
+	TCPsocket socket = {0};
+	if(!(socket = SDLNet_TCP_Open(&addr))){
+		printf(
+			"SDLNet_TCP_Open error:\n\t%s\n",
+			SDLNet_GetError()
+		);
+		exit(1);
+	}
+	printf("Server socket (sSock) opened for listening\n");
+	return socket;
+}
+
+TCPsocket tcpStartServer(const uint port)
+{
+	return tcpOpen(tcpGetLocalIp(port));
+	printf("Server started\n");
+}
+
+TCPsocket tcpWaitForClient(const TCPsocket server)
+{
+	TCPsocket client;
+	while(!(client = SDLNet_TCP_Accept(server))){
+		SDL_Delay(100);
+	}
+	printf("Client connected\n");
+	return client;
+}
+
+IPaddress tcpGetClientIp(const TCPsocket client)
+{
+	IPaddress clientIp = {0};
+	IPaddress *clientIpPtr = NULL;
+	if(!(clientIpPtr = SDLNet_TCP_GetPeerAddress(client))){
+		printf(
+			"SDLNet_TCP_GetPeerAddress error:\n\t%s\n",
+			SDLNet_GetError()
+		);
+		exit(1);
+	}
+	clientIp.host = clientIpPtr->host;
+	clientIp.port = clientIpPtr->port;
+	printf("\tIP: ");
+	printIp(clientIp.host);
+	printf("\tPort: ");
+	printPort(clientIp.port);
+	return clientIp;
+}
