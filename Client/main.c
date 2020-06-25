@@ -29,8 +29,5 @@ int main(int argc, char const *argv[])
 			exit(0);
 		}
 	}
-
-	printf("WOOOO\n");
-	exit(0);
 	return 0;
 }

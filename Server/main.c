@@ -28,8 +28,5 @@ int main(int argc, char const *argv[])
 		}
 		printf("Message -\n%s\n", buffer);
 	}
-
-	printf("WOOOO\n");
-	exit(0);
 	return 0;
 }
