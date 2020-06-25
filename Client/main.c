@@ -1,3 +1,5 @@
+// CLIENT
+
 #define PORT	8421
 #define BUFFERLEN	1024
 #include "Includes.h"
