@@ -52,6 +52,25 @@ IPaddress tcpResolveHost(const char *hostname, const u16 port)
 	return ip;
 }
 
+TCPsocket tcpConnectToServer(IPaddress addr)
+{
+	TCPsocket server = {0};
+	if(!(server = SDLNet_TCP_Open(&addr))){
+		printf(
+			"SDLNet_TCP_Open error:\n\t%s\n",
+			SDLNet_GetError()
+		);
+		exit(1);
+	}
+	printf("Established connection with server\n");
+	return server;
+}
+
+TCPsocket tcpStartClient(const char *serverHostname, const u16 serverPort)
+{
+	return tcpConnectToServer(tcpResolveHost(serverHostname, serverPort));
+}
+
 IPaddress tcpGetLocalIp(const u16 port)
 {
 	IPaddress addr = {0};
