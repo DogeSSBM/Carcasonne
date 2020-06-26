@@ -201,9 +201,15 @@ TCPsocket tcpGetSetDataTimeout(const SocketSet set, TCPsocket *setArr, const uin
 	return NULL;
 }
 
-uint tcpReadData(TCPsocket socket, const char *buffer, uint len)
+void tcpReadData(TCPsocket socket, char *buffer, uint len)
 {
-	if(!socket)
-		return 0;
-
+	if(!socket || !SDLNet_SocketReady(socket))
+		return;
+	if(SDLNet_TCP_Recv(socket, buffer, len) <= 0){
+		printf(
+				"SDLNet_TCP_Recv error:\n\t%s\n",
+				SDLNet_GetError()
+			);
+		exit(1);
+	}
 }

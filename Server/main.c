@@ -63,14 +63,11 @@ int main(int argc, char const *argv[])
 				100
 			);
 		}
-		if(SDLNet_TCP_Recv(clientDataSock, buffer, BUFFERLEN) <= 0){
-			printf(
-				"SDLNet_TCP_Recv error:\n\t%s\n",
-				SDLNet_GetError()
-			);
-			exit(1);
-		}
-		buffer[BUFFERLEN-1] = '\0';
+		tcpReadData(clientDataSock, buffer, BUFFERLEN);
+		char *nl = &(buffer[BUFFERLEN-1]);
+		do{
+			*nl = '\0';
+		}while(nl = strchr(buffer, '\n'));
 		switch(parseCmd(buffer)) {
 			case CMD_QUIT:
 				printf("Exiting :3\n");
