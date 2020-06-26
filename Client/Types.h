@@ -80,9 +80,6 @@ typedef enum{
 
 #define dirROR(d)			(((d)+1)&0b11)
 #define dirROL(d)			(((d)-1)&0b11)
-
-//#define dirROR(d)			(((d)&1)<<1^((d)^1))
-//#define dirROL(d)			(((d)^1)<<1^((d)^1))
 #define dirINV(d)			((d)^0b10)
 #define dirLR(d)			((d)&1)
 #define dirUD(d)			(!((d)&1))

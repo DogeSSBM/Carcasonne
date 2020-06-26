@@ -2,6 +2,7 @@
 
 typedef enum{L_FIELD, L_CITY, L_NONE}LandType;
 
+
 typedef union{
 	bool arr[4];
 	struct{
