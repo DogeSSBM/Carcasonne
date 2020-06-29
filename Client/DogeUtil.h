@@ -16,5 +16,5 @@ void init(const uint winXlen, const uint winYlen)
 	gfx_init(winXlen, winYlen);
 	img_init();
 	text_init();
-	net_init();
+	//net_init();
 }

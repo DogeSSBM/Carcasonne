@@ -28,4 +28,6 @@
 #include "DogeUtil.h"
 
 #include "Tile.h"
+#include "TileDefs.h"
+#include "TileUtil.h"
 #include "Events.h"

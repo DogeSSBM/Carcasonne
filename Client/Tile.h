@@ -1,6 +1,6 @@
 #pragma once
 
-typedef enum{L_FIELD, L_CITY, L_NONE}LandType;
+typedef enum{L_NONE, L_FIELD, L_CITY, L_CHURCH, L_NUM}LandType;
 
 
 typedef union{
@@ -25,6 +25,7 @@ typedef union{
 }Land;
 
 typedef struct Tile{
+	bool bonus;
 	Road road;
 	Land land;
 	union{
@@ -37,8 +38,3 @@ typedef struct Tile{
 		};
 	};
 }Tile;
-
-void drawTile(const Tile t, const uint x, const uint y, const uint scale)
-{
-
-}

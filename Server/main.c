@@ -21,6 +21,20 @@ CmdId parseCmd(const char* text)
 	return CMD_NOTCMD;
 }
 
+CmdId readCmd(TCPsocket player)
+{
+	char buffer[BUFFERLEN] = {0};
+	tcpReadData(player, buffer, BUFFERLEN);
+	char *nl = &(buffer[BUFFERLEN-1]);
+	do{
+		*nl = '\0';
+	}while(nl = strchr(buffer, '\n'));
+	CmdId cmd = parseCmd(buffer);
+	if(cmd == CMD_NOTCMD)
+		printf("Message -\n%s\n", buffer);
+	return cmd;
+}
+
 uint connectPlayers(TCPsocket sSock, SocketSet playerSet, TCPsocket *playerArr)
 {
 	uint playerCount = 0;
@@ -35,9 +49,26 @@ uint connectPlayers(TCPsocket sSock, SocketSet playerSet, TCPsocket *playerArr)
 			printf("\tPort: ");
 			printIp(playerIp.host);
 		}
-		if(playerCount && tcpGetSetDataTimeout(playerSet, playerArr, 100)){
-			for(uint i = 0; i < playerCount; i++){
+		TCPsocket clientDataSock = tcpGetSetDataTimeout(
+			playerSet,
+			playerArr,
+			100
+		);
+		if(clientDataSock){
+			switch(readCmd(clientDataSock)) {
+				case CMD_QUIT:
+					printf("Exiting :3\n");
+					tcpFreeSet(playerSet);
+					tcpFreeSetArr(playerArr, playerCount);
+					exit(0);
+					break;
+				case CMD_START:
+					printf("Starting game!\n");
+					return playerCount;
+					break;
+				default:
 
+					break;
 			}
 		}
 	}

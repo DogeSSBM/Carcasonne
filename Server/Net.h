@@ -120,7 +120,7 @@ TCPsocket tcpWaitForClient(const TCPsocket server)
 	while(!(client = SDLNet_TCP_Accept(server))){
 		SDL_Delay(100);
 	}
-	// printf("Client connected\n");
+	printf("Client connected\n");
 	return client;
 }
 
@@ -137,10 +137,10 @@ IPaddress tcpGetClientIp(const TCPsocket client)
 	}
 	clientIp.host = clientIpPtr->host;
 	clientIp.port = clientIpPtr->port;
-	// printf("\tIP: ");
-	// printIp(clientIp.host);
-	// printf("\tPort: ");
-	// printPort(clientIp.port);
+	printf("\tIP: ");
+	printIp(clientIp.host);
+	printf("\tPort: ");
+	printPort(clientIp.port);
 	return clientIp;
 }
 
