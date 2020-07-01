@@ -10,7 +10,12 @@ int main(int argc, char const *argv[])
 	// TCPsocket sSock = tcpStartClient("localhost", PORT);
 	clear();
 	deckInit();
-	drawTileVariants(90);
+	for(uint i = 0; i < 4; i++){
+		drawTileVariants(i*310, 0, 50);
+		for(uint i = 0; i < TILE_VARIANTS; i++){
+			tileVarients[i] = tileRotate(tileVarients[i], DIR_R);
+		}
+	}
 	draw();
 	while(1){
 		// char buffer[BUFFERLEN] = {0};
@@ -31,7 +36,7 @@ int main(int argc, char const *argv[])
 		// 	exit(0);
 		// }
 		Ticks frameStart = getTicks();
-
+		
 		events(frameStart + TPF);
 	}
 	return 0;

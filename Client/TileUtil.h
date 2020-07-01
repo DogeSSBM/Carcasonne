@@ -1,19 +1,33 @@
 #pragma once
 
+Tile tileRotate(const Tile t, const Direction dir)
+{
+	Tile r = {0};
+	r.bonus = t.bonus;
+	r.land.C = t.land.C;
+	if(dirLR(dir)){
+		for(uint i = 0; i < 4; i++){
+			r.road.arr[dir==DIR_R?dirROR(i):dirROL(i)] = t.road.arr[i];
+			r.land.arr[dir==DIR_R?dirROR(i):dirROL(i)] = t.land.arr[i];
+		}
+	}else{
+		for(uint i = 0; i < 4; i++){
+			r.road.arr[dirINV(i)] = t.road.arr[i];
+			r.land.arr[dirINV(i)] = t.land.arr[i];
+		}
+	}
+	return r;
+}
+
 void tileCpy(Tile *dest, const Tile *source)
 {
-	dest->bonus = source->bonus;
-
-	dest->road.U = source->road.U;
-	dest->road.R = source->road.R;
-	dest->road.D = source->road.D;
-	dest->road.L = source->road.L;
-
-	dest->land.U = source->land.U;
-	dest->land.R = source->land.R;
-	dest->land.D = source->land.D;
-	dest->land.L = source->land.L;
+	for(uint i = 0; i < 4; i++){
+		dest->arr[i] = source->arr[i];
+		dest->road.arr[i] = source->road.arr[i];
+		dest->land.arr[i] = source->land.arr[i];
+	}
 	dest->land.C = source->land.C;
+	dest->bonus = source->bonus;
 }
 
 void deckInit(void)
@@ -74,6 +88,12 @@ uint tileNumRoad(const Tile t)
 	return total;
 }
 
+void eraseTile(const uint x, const uint y, const uint scale)
+{
+	setColor(BLACK);
+	fillSquare(x,y,scale);
+}
+
 void drawTile(const Tile t, const uint x, const uint y, const uint scale)
 {
 	if(t.land.C == L_NONE){
@@ -98,17 +118,18 @@ void drawTile(const Tile t, const uint x, const uint y, const uint scale)
 		}
 		fillRectCoords(c1, c2);
 	}
+	drawSquare(x, y, scale);
 }
 
-void drawTileVariants(const uint scale)
+void drawTileVariants(const uint xorig, const uint yorig, const uint scale)
 {
-	uint x = 0;
-	uint y = 0;
+	uint x = xorig;
+	uint y = yorig;
 	for(uint i = 0; i < TILE_VARIANTS; i++){
 		printf("drawing variant %2u\n", i);
 		drawTile(tileVarients[i], x, y, scale);
 		if(y+scale*2 >= gfx.ylen){
-			y = 0;
+			y = yorig;
 			if(x+scale > gfx.xlen){
 				printf("Cant fit any more tiles, returning early\n");
 				return;

@@ -1,7 +1,5 @@
 #pragma once
-
 typedef enum{L_NONE, L_FIELD, L_CITY, L_CHURCH, L_NUM}LandType;
-
 
 typedef union{
 	bool arr[4];
