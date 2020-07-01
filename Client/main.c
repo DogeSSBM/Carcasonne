@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 	clear();
 	deckInit();
 	for(uint i = 0; i < 4; i++){
-		drawTileVariants(i*310, 0, 50);
+		drawTileVariants(i*310, 0, 90);
 		for(uint i = 0; i < TILE_VARIANTS; i++){
 			tileVarients[i] = tileRotate(tileVarients[i], DIR_R);
 		}
@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
 		// 	exit(0);
 		// }
 		Ticks frameStart = getTicks();
-		
+
 		events(frameStart + TPF);
 	}
 	return 0;

@@ -1,7 +1,7 @@
 #pragma once
 #define DBGSCALE 48
 
-void drawDbgText(const uint scale, const uint index);
+void drawDbgText(const uint scale, const uint index)
 {
 	setFontSize(DBGSCALE);
 	setFontColor(WHITE);
@@ -17,7 +17,7 @@ void drawDbgText(const uint scale, const uint index);
 void events(Ticks frameEnd)
 {
 	static uint tileIndex = 0;
-	static Tile t = tileVarients[0];
+	static Tile t = {0};
 	static uint scale = 90;
 	static uint x = 0;
 	static uint y = 0;
@@ -42,8 +42,9 @@ void events(Ticks frameEnd)
 			case SDLK_w:
 			case SDLK_UP:
 				if(y+scale*2 >= gfx.ylen){
-				tileIndex = wrap(tileIndex-1,0,TILE_VARIANTS);
-				t = tileVarients[tileIndex];
+					tileIndex = wrap(tileIndex-1,0,TILE_VARIANTS);
+					t = tileVarients[tileIndex];
+				}
 				break;
 			case SDLK_d:
 			case SDLK_RIGHT:
