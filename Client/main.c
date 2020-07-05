@@ -7,44 +7,67 @@ int main(int argc, char const *argv[])
 {
 	init(1800, 1000);
 	const uint qs = gfx.xlen/4;
-	deckInit();
-	// TCPsocket sSock = tcpStartClient("localhost", PORT);
-	// for(uint i = 0; i < 4; i++){
-	// 	drawTileVariants(i*320, 0, 100);
-	// 	for(uint i = 0; i < TILE_VARIANTS; i++){
-	// 		tileVarients[i] = tileRotate(tileVarients[i], DIR_R);
-	// 	}
-	// }
+	gameInit();
 	while(1){
-		// char buffer[BUFFERLEN] = {0};
-		// printf("Enter message, or \"!Q\" (without quotes) to quit\n");
-		// fgets(buffer,1024,stdin);
-		// uint len = strlen(buffer);
-		// buffer[len-1] = '\0';
-		// if((SDLNet_TCP_Send(sSock, buffer, BUFFERLEN)) < len){
-		// 	printf(
-		// 		"SDLNet_TCP_Send error:\n\t%s\n",
-		// 		SDLNet_GetError()
-		// 	);
-		// 	exit(1);
-		// }
-		// if(buffer[0] == '!' && buffer[1] == 'Q'){
-		// 	printf("Exiting :3\n");
-		// 	SDLNet_TCP_Close(sSock);
-		// 	exit(0);
-		// }
-		static bool thing = true;
-		Ticks frameStart = getTicks();
-		if(thing){
-			clear();
-			for(uint i = 0; i < 4; i++){
-				deckShuffle();
-				drawDeck(qs*i,0,72, TILE_TOTAL);
+		const Ticks frameEnd = getTicks()+TPF;
+		drawGrid(gfx.xlen/2+50, gfx.ylen/2+50, 100);
+// ################################
+// #       Event loop Start       #
+// ################################
+while(getTicks() < frameEnd){
+	static Event event;
+	if(!SDL_WaitEventTimeout(&event, frameEnd-getTicks()))
+		break;
+	switch(event.type){
+	case SDL_QUIT:
+		printf("Quitting now!\n");
+		exit(0);
+		break;
+	case SDL_KEYDOWN:
+		switch (event.key.keysym.sym) {
+		case SDLK_ESCAPE:
+			printf("Esc key pressed, exiting now\n");
+			exit(0);
+			break;
+		case SDLK_SPACE:
+			printf("Shuffling deck\n");
+			break;
+		case SDLK_d:
+		case SDLK_RIGHT:
+			for(uint j = 0; j < deckSize; j++){
+				deck[j] = tileRotate(deck[j], DIR_R);
 			}
-			draw();
-			thing = false;
+			break;
+		case SDLK_a:
+		case SDLK_LEFT:
+			for(uint j = 0; j < deckSize; j++){
+				deck[j] = tileRotate(deck[j], DIR_L);
+			}
+			break;
 		}
-		events(frameStart + TPF, &thing);
+		break;
+	case SDL_MOUSEMOTION:
+
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		switch (event.button.button) {
+		case SDL_BUTTON_LEFT:
+			break;
+		}
+		break;
+	case SDL_MOUSEBUTTONUP:
+		switch (event.button.button) {
+		case SDL_BUTTON_LEFT:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+}
+// ################################
+// #        Event loop end        #
+// ################################
 	}
 	return 0;
 }

@@ -63,7 +63,7 @@ typedef union{
 		int pos;
 		int neg;
 	};
-}Coord;
+}Coord, Length, Offset, I2;
 
 static inline
 bool sameCoord(const Coord pos1, const Coord pos2)
@@ -77,6 +77,7 @@ typedef enum{
 	DIR_D = 0b10,
 	DIR_L = 0b11
 }Direction;
+typedef Direction Rotation;
 
 #define dirROR(d)			(((d)+1)&0b11)
 #define dirROL(d)			(((d)-1)&0b11)
@@ -123,10 +124,15 @@ static inline
 Coord coordShift(const Coord coord, const Direction dir, const int units)
 {
 	Coord ret = coord;
-	if(dirUD(dir)){
+	if(dirUD(dir))
 		ret.y += dirPOS(dir)? units : -units;
-	}else{
+	else
 		ret.x += dirPOS(dir)? units : -units;
-	}
 	return ret;
+}
+
+static inline
+Coord coordOffset(const Coord coord, const Offset offset)
+{
+	return coordShift(coordShift(coord, DIR_D, offset.y), DIR_R, offset.x);
 }

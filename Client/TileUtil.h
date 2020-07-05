@@ -1,5 +1,8 @@
 #pragma once
 
+Length gridLen = {0, 0};
+Tile** grid = NULL;
+
 Tile tileRotate(const Tile t, const Direction dir)
 {
 	Tile r = {0};
@@ -28,26 +31,27 @@ void deckShuffle(void)
 		deck[tileIndex1] = deck[tileIndex2];
 		deck[tileIndex2] = temp;
 	}
-	// printf("\n#########Shuffled  Deck#########\n");
+	printf("Shuffled  Deck\n");
 }
 
 void deckInit(void)
 {
-	uint decknum = 0;
+	uint current = 0;
 	for(uint v = 0; v < TILE_VARIANTS; v++){
+		printf("Varient %2u\n", v);
 		for(uint n = 0; n < tileVarientNum[v]; n++){
 			printf(
-				"decknum: %2u variant: %2u (%2u of %2u)\n",
-				decknum,
-				v,
+				"\tdeck tile: %2u/%2u \t  (%2u/%2u)\n",
+				current+1,
+				TILE_TOTAL,
 				n+1,
-				tileVarientNum[n]
+				tileVarientNum[v]
 			);
-			deck[decknum]=tileVarients[v];
-			decknum++;
+			deck[current++]=tileVarients[v];
 		}
+		putchar('\n');
 	}
-	printf("\n########Constructed Deck########\n");
+	printf("Constructed Deck\n");
 }
 
 uint tileNumRoad(const Tile t)
@@ -57,4 +61,24 @@ uint tileNumRoad(const Tile t)
 		total += t.road.arr[i];
 	}
 	return total;
+}
+
+void gridInit(void)
+{
+	grid = malloc(TILE_TOTAL*sizeof(Tile*));
+	for(uint x = 0; x < TILE_TOTAL; x++){
+		// printf("allocing  grid[%2u]\n", x);
+		grid[x]=malloc(TILE_TOTAL*sizeof(Tile));
+	}
+	gridLen.x = TILE_TOTAL;
+	gridLen.y = TILE_TOTAL;
+	grid[gridLen.x/2][gridLen.y/2]=deck[51];
+	deck[51]=deck[--deckSize];
+}
+
+void gameInit(void)
+{
+	deckInit();
+	gridInit();
+	deckShuffle();
 }

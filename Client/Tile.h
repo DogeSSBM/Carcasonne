@@ -26,13 +26,4 @@ typedef struct Tile{
 	bool bonus;
 	Road road;
 	Land land;
-	union{
-		struct Tile *arr[4];
-		struct{
-			struct Tile *U;
-			struct Tile *R;
-			struct Tile *D;
-			struct Tile *L;
-		};
-	};
 }Tile;
