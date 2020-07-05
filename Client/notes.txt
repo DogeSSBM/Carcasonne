@@ -1,0 +1,8 @@
+req: draw tile
+
+req: place tile
+	catch: redraw until a placable tile is drawn and placed, shuffle all invalid tiles back into deck
+
+opt: place meeple on an unoccupied feature in the tile you just placed
+
+req: score any & all features completed by tile placement

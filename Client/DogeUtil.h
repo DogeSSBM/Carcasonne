@@ -5,9 +5,14 @@ void clearTerminal(void)
 	printf("\e[1;1H\e[2J");
 }
 
-float randRange(float a, float b)
+float randRangeFloat(const float min, const float max)
 {
-	return ((b-a)*((float)rand()/RAND_MAX))+a;
+	return ((max-min)*((float)rand()/RAND_MAX))+min;
+}
+
+int randRange(const int min, const int max)
+{
+	return (rand()%(max-min))+min;
 }
 
 void init(const uint winXlen, const uint winYlen)

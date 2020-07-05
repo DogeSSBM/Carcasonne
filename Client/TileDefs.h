@@ -3,7 +3,7 @@
 #define TILE_TOTAL	72
 #define TILE_VARIANTS	24
 
-const Tile tileVarients[TILE_VARIANTS] = {
+ Tile tileVarients[TILE_VARIANTS] = {
 // 4 section
 	{
 		true,
@@ -137,4 +137,5 @@ uint tileVarientNum[TILE_VARIANTS] = {
 	4, 2, 1, 2, 2, 3, 3, 4, 3, 1, 1, 3, 5, 3, 3
 };
 
+uint deckSize = TILE_TOTAL;
 Tile deck[TILE_TOTAL] = {0};

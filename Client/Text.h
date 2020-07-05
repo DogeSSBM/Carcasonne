@@ -1,6 +1,6 @@
 #pragma once
 
-void drawText(uint x, uint y, const char *text)
+void drawText(const uint x, const uint y, const char *text)
 {
 	Rect r;
 	r.x = x; r.y = y;
@@ -12,7 +12,13 @@ void drawText(uint x, uint y, const char *text)
 	SDL_DestroyTexture(texture);
 }
 
-void drawTextCentered(uint x, uint y, const char *text)
+static inline
+void drawTextCoord(const Coord coord, const char *text)
+{
+	drawText(coord.x, coord.y, text);
+}
+
+void drawTextCentered(const uint x, const uint y, const char *text)
 {
 	Rect r;
 	r.x = x; r.y = y;
@@ -24,6 +30,12 @@ void drawTextCentered(uint x, uint y, const char *text)
 	SDL_RenderCopy(gfx.renderer, texture, NULL, &r);
 	SDL_FreeSurface(surface);
 	SDL_DestroyTexture(texture);
+}
+
+static inline
+void drawTextCenteredCoord(const Coord coord, const char *text)
+{
+	drawTextCentered(coord.x, coord.y, text);
 }
 
 typedef struct{

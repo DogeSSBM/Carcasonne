@@ -5,18 +5,16 @@
 
 int main(int argc, char const *argv[])
 {
-	init(1200, 900);
-
-	// TCPsocket sSock = tcpStartClient("localhost", PORT);
-	clear();
+	init(1800, 1000);
+	const uint qs = gfx.xlen/4;
 	deckInit();
-	for(uint i = 0; i < 4; i++){
-		drawTileVariants(i*310, 0, 50);
-		for(uint i = 0; i < TILE_VARIANTS; i++){
-			tileVarients[i] = tileRotate(tileVarients[i], DIR_R);
-		}
-	}
-	draw();
+	// TCPsocket sSock = tcpStartClient("localhost", PORT);
+	// for(uint i = 0; i < 4; i++){
+	// 	drawTileVariants(i*320, 0, 100);
+	// 	for(uint i = 0; i < TILE_VARIANTS; i++){
+	// 		tileVarients[i] = tileRotate(tileVarients[i], DIR_R);
+	// 	}
+	// }
 	while(1){
 		// char buffer[BUFFERLEN] = {0};
 		// printf("Enter message, or \"!Q\" (without quotes) to quit\n");
@@ -35,9 +33,18 @@ int main(int argc, char const *argv[])
 		// 	SDLNet_TCP_Close(sSock);
 		// 	exit(0);
 		// }
+		static bool thing = true;
 		Ticks frameStart = getTicks();
-		
-		events(frameStart + TPF);
+		if(thing){
+			clear();
+			for(uint i = 0; i < 4; i++){
+				deckShuffle();
+				drawDeck(qs*i,0,72, TILE_TOTAL);
+			}
+			draw();
+			thing = false;
+		}
+		events(frameStart + TPF, &thing);
 	}
 	return 0;
 }

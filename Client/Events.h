@@ -1,27 +1,8 @@
 #pragma once
-#define DBGSCALE 48
 
-void drawDbgText(const uint scale, const uint index);
+void events(Ticks frameEnd, bool *thing)
 {
-	setFontSize(DBGSCALE);
-	setFontColor(WHITE);
-	printf("scale = %3u\n", scale);
-	printf("index = %3u\n", index);
-	char buffer[20] = {0};
-	sprintf(buffer, "scale = %3u", scale);
-	drawText(DBGSCALE, DBGSCALE, buffer);
-	sprintf(buffer, "scale = %3u", scale);
-	drawText(DBGSCALE, DBGSCALE*2, buffer);
-}
-
-void events(Ticks frameEnd)
-{
-	static uint tileIndex = 0;
-	static Tile t = tileVarients[0];
-	static uint scale = 90;
-	static uint x = 0;
-	static uint y = 0;
-
+	*thing = false;
 	i32 ticksLeft = frameEnd - getTicks();
 	while(ticksLeft > 0){
 		static Event event;
@@ -39,61 +20,39 @@ void events(Ticks frameEnd)
 				exit(0);
 				return;
 				break;
+			case SDLK_SPACE:
+				printf("Shuffling deck\n");
+				*thing = true;
+				break;
 			case SDLK_w:
 			case SDLK_UP:
-				if(y+scale*2 >= gfx.ylen){
-				tileIndex = wrap(tileIndex-1,0,TILE_VARIANTS);
-				t = tileVarients[tileIndex];
 				break;
 			case SDLK_d:
 			case SDLK_RIGHT:
-
 				break;
 			case SDLK_s:
 			case SDLK_DOWN:
-				tileIndex = wrap(tileIndex-1,0,TILE_VARIANTS);
-				t = tileVarients[tileIndex];
-				clear();
-
-				draw();
 				break;
 			case SDLK_a:
 			case SDLK_LEFT:
-
 				break;
 			}
 			break;
 		case SDL_MOUSEMOTION:
-
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			switch (event.button.button) {
 			case SDL_BUTTON_LEFT:
-
-				break;
-			case SDL_BUTTON_RIGHT:
-
-				break;
-			case SDL_BUTTON_MIDDLE:
-
 				break;
 			}
 			break;
 		case SDL_MOUSEBUTTONUP:
 			switch (event.button.button) {
 			case SDL_BUTTON_LEFT:
-
-				break;
-			case SDL_BUTTON_RIGHT:
-
-				break;
-			case SDL_BUTTON_MIDDLE:
-
 				break;
 			}
 			break;
 		default:
-
 			break;
 		}
 		ticksLeft = frameEnd - getTicks();
