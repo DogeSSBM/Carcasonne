@@ -3,7 +3,7 @@
 #define TILE_TOTAL	72
 #define TILE_VARIANTS	24
 
- Tile tileVarients[TILE_VARIANTS] = {
+Tile tileVarients[TILE_VARIANTS] = {
 // 4 section
 	{
 		true,
