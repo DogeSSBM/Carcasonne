@@ -35,6 +35,7 @@ typedef int64_t			i64;
 
 #define ABS(n)			((n)<0? -(n):(n))
 #define ZFLOOR(n)			((n)<0?    0:(n))
+#define CEIL(n, c)		((n)>(c)?(c):(n))
 
 typedef SDL_Event			Event;
 typedef SDL_Rect 			Rect;

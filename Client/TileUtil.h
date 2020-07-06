@@ -68,8 +68,7 @@ void gridInit(void)
 	grid = malloc(TILE_TOTAL*sizeof(Tile*));
 	for(uint x = 0; x < TILE_TOTAL; x++){
 		// printf("allocing  grid[%2u]\n", x);
-		grid[x]=malloc(TILE_TOTAL*sizeof(Tile));
-		memset(grid[x], 0, TILE_TOTAL*sizeof(Tile));
+		grid[x]=calloc(1, TILE_TOTAL*sizeof(Tile));
 	}
 	gridLen.x = TILE_TOTAL;
 	gridLen.y = TILE_TOTAL;
@@ -81,5 +80,10 @@ void gameInit(void)
 {
 	deckInit();
 	gridInit();
-	deckShuffle();
+	// deckShuffle();
+}
+
+Tile tilePickup(void)
+{
+	return deck[--deckSize];
 }
