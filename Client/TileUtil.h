@@ -69,6 +69,7 @@ void gridInit(void)
 	for(uint x = 0; x < TILE_TOTAL; x++){
 		// printf("allocing  grid[%2u]\n", x);
 		grid[x]=malloc(TILE_TOTAL*sizeof(Tile));
+		memset(grid[x], 0, TILE_TOTAL*sizeof(Tile));
 	}
 	gridLen.x = TILE_TOTAL;
 	gridLen.y = TILE_TOTAL;

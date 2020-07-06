@@ -126,8 +126,8 @@ void drawGrid(const int xoff, const int yoff, const uint scale)
 {
 	for(uint x = 0; x < gridLen.x; x++){
 		for(uint y = 0; y < gridLen.y; y++){
-			const int sx = x*scale+xoff;
-			const int sy = y*scale+yoff;
+			const int sx = (x*scale)/2+xoff;
+			const int sy = (y*scale)/2+yoff;
 			if(isTileEmpty(grid[x][y]) || sx+scale < 0 || sy+scale < 0 ||
 			sx > gfx.xlen || sy > gfx.ylen){
 				continue;

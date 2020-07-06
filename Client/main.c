@@ -8,9 +8,12 @@ int main(int argc, char const *argv[])
 	init(1800, 1000);
 	const uint qs = gfx.xlen/4;
 	gameInit();
+	Offset gridOff = {gridLen.x,0};
 	while(1){
+		clear();
 		const Ticks frameEnd = getTicks()+TPF;
-		drawGrid(gfx.xlen/2+50, gfx.ylen/2+50, 100);
+		drawGrid(gridOff.x, gridOff.x, 20);
+		draw();
 // ################################
 // #       Event loop Start       #
 // ################################
