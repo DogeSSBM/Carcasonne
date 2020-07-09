@@ -20,7 +20,6 @@ void drawTile4(const Tile t, const uint x, const uint y, const uint scale, const
 			p = coordShift(p, dirROL(s), 1);
 		}
 	}
-
 }
 
 void drawTile5(const Tile t, const uint x, const uint y, const uint scale, const bool solid)
@@ -75,69 +74,60 @@ void drawTile(const Tile t, const uint x, const uint y, const uint scale, const 
 	}
 }
 
-// void drawTileVariants(const uint xorig, const uint yorig, const uint scale)
-// {
-// 	uint x = xorig;
-// 	uint y = yorig;
-// 	for(uint i = 0; i < TILE_VARIANTS; i++){
-// 		printf("drawing variant %2u\n", i);
-// 		drawTile(tileVarients[i], x, y, scale);
-// 		if(y+scale*2 >= gfx.ylen){
-// 			y = yorig;
-// 			if(x+scale > gfx.xlen){
-// 				printf("Cant fit any more tiles, returning early\n");
-// 				return;
-// 			}
-// 			x+=scale;
-// 		}else{
-// 			y+=scale;
-// 		}
-// 	}
-// }
-
-// void drawDeck(const uint xorig, const uint yorig,
-// const uint scale, const uint numTiles)
-// {
-// 	setFontSize(scale/4);
-// 	setFontColor(BLACK);
-// 	uint x = xorig;
-// 	uint y = yorig;
-// 	for(uint i = 0; i < numTiles; i++){
-// 		if(i >= deckSize){
-// 			printf("Reached end of deck early\n");
-// 			return;
-// 		}
-// 		//printf("Drawing deck[%2u]\n", i);
-// 		drawTile(deck[i], x, y, scale);
-// 		char istr[] = "00";
-// 		sprintf(istr, "%02u", i);
-// 		drawTextCentered(x+scale/2, y+scale/2, istr);
-// 		if(y+scale*2 >= gfx.ylen){
-// 			y = yorig;
-// 			if(x+scale > gfx.xlen){
-// 				printf("Cant fit any more tiles, returning early\n");
-// 				return;
-// 			}
-// 			x+=scale;
-// 		}else{
-// 			y+=scale;
-// 		}
-// 	}
-// }
-
-bool isTileEmpty(const Tile t)
+/*void drawTileVariants(const uint xorig, const uint yorig, const uint scale)
 {
-	for(uint i = 0; i < 4; i++){
-		if(t.land.arr[i] || t.road.arr[i])
-			return false;
+	uint x = xorig;
+	uint y = yorig;
+	for(uint i = 0; i < TILE_VARIANTS; i++){
+		printf("drawing variant %2u\n", i);
+		drawTile(tileVarients[i], x, y, scale);
+		if(y+scale*2 >= gfx.ylen){
+			y = yorig;
+			if(x+scale > gfx.xlen){
+				printf("Cant fit any more tiles, returning early\n");
+				return;
+			}
+			x+=scale;
+		}else{
+			y+=scale;
+		}
 	}
-	return true;
-}
+}*/
 
-void drawGrid(const int xoffc, const int yoffc, const uint scale)
+/*void drawDeck(const uint xorig, const uint yorig,
+const uint scale, const uint numTiles)
 {
-	const uint xoff = xoffc-(scale*(gridLen.x/2));
-	const uint yoff = yoffc-(scale*(gridLen.y/2));
+	setFontSize(scale/4);
+	setFontColor(BLACK);
+	uint x = xorig;
+	uint y = yorig;
+	for(uint i = 0; i < numTiles; i++){
+		if(i >= deckSize){
+			printf("Reached end of deck early\n");
+			return;
+		}
+		//printf("Drawing deck[%2u]\n", i);
+		drawTile(deck[i], x, y, scale);
+		char istr[] = "00";
+		sprintf(istr, "%02u", i);
+		drawTextCentered(x+scale/2, y+scale/2, istr);
+		if(y+scale*2 >= gfx.ylen){
+			y = yorig;
+			if(x+scale > gfx.xlen){
+				printf("Cant fit any more tiles, returning early\n");
+				return;
+			}
+			x+=scale;
+		}else{
+			y+=scale;
+		}
+	}
+}*/
+
+void drawGrid(const Offset off, const uint scale)
+{
+	const uint xoff = off.x-(scale*(gridLen.x/2));
+	const uint yoff = off.y-(scale*(gridLen.y/2));
 	for(uint x = 0; x < gridLen.x; x++){
 		for(uint y = 0; y < gridLen.y; y++){
 			const int sx = (x*scale)+xoff;
@@ -149,4 +139,25 @@ void drawGrid(const int xoffc, const int yoffc, const uint scale)
 			drawTile(grid[x][y], sx, sy, scale, true);
 		}
 	}
+	Coord gorig = {xoff, yoff};
+	setColor(WHITE);
+	drawRectCoords(
+		gorig,
+		coordShift(
+			coordShift(
+				gorig, DIR_D, gridLen.y*scale
+			),
+			DIR_R,
+			gridLen.x*scale
+		)
+	);
+}
+
+void drawCurrentTile(const Tile currentTile)
+{
+	setColor(RED);
+	fillSquare(gfx.xlen/2-(HCTLEN+8), gfx.ylen-(CTLEN+16), CTLEN+16);
+	setColor(BLACK);
+	fillSquare(gfx.xlen/2-(HCTLEN+5), gfx.ylen-(CTLEN+13), CTLEN+10);
+	drawTile(currentTile, gfx.xlen/2-HCTLEN, gfx.ylen-(CTLEN+8), CTLEN, true);
 }

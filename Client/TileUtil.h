@@ -80,10 +80,54 @@ void gameInit(void)
 {
 	deckInit();
 	gridInit();
-	// deckShuffle();
+	deckShuffle();
 }
 
 Tile tilePickup(void)
 {
 	return deck[--deckSize];
+}
+
+Tile tilePickupSwap(const Tile t)
+{
+	deck[++deckSize] = t;
+	deckShuffle();
+	return tilePickup();
+}
+
+bool isTileEmpty(const Tile t)
+{
+	for(uint i = 0; i < 4; i++){
+		if(t.land.arr[i] || t.road.arr[i])
+			return false;
+	}
+	return true;
+}
+
+bool isInGridBounds(const Coord pos)
+{
+	return inBound(pos.x, 0, gridLen.x) && inBound(pos.y, 0, gridLen.y);
+}
+
+bool tilePlace(const Tile t, const Coord pos)
+{
+	bool hasNeighbor = false;
+	if(!isInGridBounds(pos) || !isTileEmpty(grid[pos.x][pos.y]))
+		return false;
+	for(uint i = 0; i < 4; i++){
+		const Coord npos = coordShift(pos, i, 1);
+		if(!isInGridBounds(npos) || isTileEmpty(grid[npos.x][npos.y]))
+			continue;
+		const Tile n = grid[npos.x][npos.y];
+		if(
+			t.road.arr[i] != n.road.arr[dirINV(i)] ||
+			t.land.arr[i] != n.land.arr[dirINV(i)]
+		){
+			return false;
+		}
+		hasNeighbor = true;
+	}
+	if(hasNeighbor)
+		grid[pos.x][pos.y] = t;
+	return hasNeighbor;
 }

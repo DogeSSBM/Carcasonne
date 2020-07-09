@@ -73,6 +73,18 @@ void fillRect(uint x, uint y, uint xlen, uint ylen)
 }
 
 static inline
+void drawRectCoords(const Coord pos1, const Coord pos2)
+{
+	Rect r = {
+		pos1.x < pos2.x? pos1.x: pos2.x,
+		pos1.y < pos2.y? pos1.y: pos2.y,
+		ABS(pos1.x-pos2.x),
+		ABS(pos1.y-pos2.y)
+	};
+	SDL_RenderDrawRect(gfx.renderer, &r);
+}
+
+static inline
 void fillRectCoords(const Coord pos1, const Coord pos2)
 {
 	Rect r = {
