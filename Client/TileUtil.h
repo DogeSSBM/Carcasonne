@@ -109,7 +109,7 @@ bool isInGridBounds(const Coord pos)
 	return inBound(pos.x, 0, gridLen.x) && inBound(pos.y, 0, gridLen.y);
 }
 
-bool tilePlace(const Tile t, const Coord pos)
+bool tileCanPlace(const Tile t, const Coord pos)
 {
 	bool hasNeighbor = false;
 	if(!isInGridBounds(pos) || !isTileEmpty(grid[pos.x][pos.y]))
@@ -127,7 +127,13 @@ bool tilePlace(const Tile t, const Coord pos)
 		}
 		hasNeighbor = true;
 	}
-	if(hasNeighbor)
-		grid[pos.x][pos.y] = t;
 	return hasNeighbor;
+}
+
+bool tilePlace(const Tile t, const Coord pos)
+{
+	const bool placeable = tileCanPlace(t, pos);
+	if(placeable)
+		grid[pos.x][pos.y] = t;
+	return placeable;
 }

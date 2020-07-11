@@ -74,13 +74,15 @@ void drawGhost(const Tile t, const Coord pos, const Offset gridOff, const uint s
 		gridOff.y-(scale*(gridLen.y/2))
 	};
 	Coord mgoff = mouseGridPos(pos, gridOff, scale);
-	if(isInGridBounds(mgoff) && isTileEmpty(grid[mgoff.x][mgoff.y])){
-		mgoff.x*=scale;
-		mgoff.x+=gorig.x;
-		mgoff.y*=scale;
-		mgoff.y+=gorig.y;
+	const bool placeable = tileCanPlace(t, mgoff);
+	mgoff.x*=scale;
+	mgoff.x+=gorig.x;
+	mgoff.y*=scale;
+	mgoff.y+=gorig.y;
+	if(placeable)
 		drawTile(t, mgoff.x, mgoff.y, scale, true);
-	}
+	setColor(placeable?BLUE:RED);
+	fillBorder(mgoff.x, mgoff.y, scale, scale, scale/16);
 }
 
 int main(int argc, char const *argv[])
@@ -98,8 +100,8 @@ int main(int argc, char const *argv[])
 		const Ticks frameEnd = getTicks()+TPF;
 		clear();
 		drawGrid(gridOff, scale);
-		drawCurrentTile(currentTile);
 		drawGhost(currentTile, mpos.pos, gridOff, scale);
+		drawCurrentTile(currentTile);
 		//drawMouse(mpos.pos, gridOff, scale);
 // ################################
 // #       Event loop Start       #
