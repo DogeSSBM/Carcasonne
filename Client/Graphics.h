@@ -126,6 +126,16 @@ void fillBorder(uint x, uint y, uint xlen, uint ylen, int b)
 	fillRect(x+xlen, y, b, ylen);
 }
 
+void drawCrosshairCoord(const Coord pos, const uint size)
+{
+	Coord p1 = coordShift(pos, DIR_L, size);
+	Coord p2 = coordShift(pos, DIR_R, size);
+	drawLineCoords(p1, p2);
+	p1 = coordShift(pos, DIR_U, size);
+	p2 = coordShift(pos, DIR_D, size);
+	drawLineCoords(p1, p2);
+}
+
 static inline
 void drawCircle(uint x, uint y, uint radius)
 {

@@ -5,30 +5,6 @@
 #define HCTLEN	(CTLEN/2)
 #include "Includes.h"
 
-void drawCrosshair(const Coord pos, const uint size)
-{
-	setColor(WHITE);
-	Coord p1 = coordShift(pos, DIR_L, size);
-	Coord p2 = coordShift(pos, DIR_R, size);
-	drawLineCoords(p1, p2);
-	p1 = coordShift(pos, DIR_U, size);
-	p2 = coordShift(pos, DIR_D, size);
-	drawLineCoords(p1, p2);
-}
-
-Coord mouseGridPos(const Coord pos, const Offset gridOff, const uint scale)
-{
-	const Coord gorig = {
-		gridOff.x-(scale*(gridLen.x/2)),
-		gridOff.y-(scale*(gridLen.y/2))
-	};
-	const Coord mgoff = {
-		pos.x>=gorig.x?(pos.x - gorig.x)/scale:-1,
-		pos.y>=gorig.y?(pos.y - gorig.y)/scale:-1
-	};
-	return mgoff;
-}
-
 typedef union{
 	Coord arr[2];
 	struct{
@@ -36,54 +12,6 @@ typedef union{
 		Coord last;
 	};
 }MousePos;
-
-void drawMouse(const Coord pos, const Offset gridOff, const uint scale)
-{
-		static char buffer[20] = {0};
-		setFontSize(16);
-		setFontColor(WHITE);
-		sprintf(buffer, "(%4u,%4u)", pos.x, pos.y);
-		drawText(pos.x, pos.y, buffer);
-		Coord gpos = {pos.x/scale, pos.y/scale};
-		sprintf(buffer, "(%4u,%4u)", gpos.x, gpos.y);
-		drawText(pos.x, pos.y+16, buffer);
-
-		Coord gorig = {
-			gridOff.x-(scale*(gridLen.x/2)),
-			gridOff.y-(scale*(gridLen.y/2))
-		};
-		Coord mgoff = {
-			pos.x>=gorig.x?(pos.x - gorig.x)/scale:-1,
-			pos.y>=gorig.y?(pos.y - gorig.y)/scale:-1
-		};
-
-		sprintf(buffer, "(%4d,%4d)", mgoff.x, mgoff.y);
-		drawText(pos.x, pos.y+32, buffer);
-
-		mgoff.x*=scale;
-		mgoff.x+=gorig.x;
-		mgoff.y*=scale;
-		mgoff.y+=gorig.y;
-		drawCrosshair(mgoff, scale);
-}
-
-void drawGhost(const Tile t, const Coord pos, const Offset gridOff, const uint scale)
-{
-	Coord gorig = {
-		gridOff.x-(scale*(gridLen.x/2)),
-		gridOff.y-(scale*(gridLen.y/2))
-	};
-	Coord mgoff = mouseGridPos(pos, gridOff, scale);
-	const bool placeable = tileCanPlace(t, mgoff);
-	mgoff.x*=scale;
-	mgoff.x+=gorig.x;
-	mgoff.y*=scale;
-	mgoff.y+=gorig.y;
-	if(placeable)
-		drawTile(t, mgoff.x, mgoff.y, scale, true);
-	setColor(placeable?BLUE:RED);
-	fillBorder(mgoff.x, mgoff.y, scale, scale, scale/16);
-}
 
 int main(int argc, char const *argv[])
 {

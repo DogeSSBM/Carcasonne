@@ -124,6 +124,37 @@ const uint scale, const uint numTiles)
 	}
 }*/
 
+void drawMouse(const Coord pos, const Offset gridOff, const uint scale)
+{
+		static char buffer[20] = {0};
+		setFontSize(16);
+		setFontColor(WHITE);
+		sprintf(buffer, "(%4u,%4u)", pos.x, pos.y);
+		drawText(pos.x, pos.y, buffer);
+		Coord gpos = {pos.x/scale, pos.y/scale};
+		sprintf(buffer, "(%4u,%4u)", gpos.x, gpos.y);
+		drawText(pos.x, pos.y+16, buffer);
+
+		Coord gorig = {
+			gridOff.x-(scale*(gridLen.x/2)),
+			gridOff.y-(scale*(gridLen.y/2))
+		};
+		Coord mgoff = {
+			pos.x>=gorig.x?(pos.x - gorig.x)/scale:-1,
+			pos.y>=gorig.y?(pos.y - gorig.y)/scale:-1
+		};
+
+		sprintf(buffer, "(%4d,%4d)", mgoff.x, mgoff.y);
+		drawText(pos.x, pos.y+32, buffer);
+
+		mgoff.x*=scale;
+		mgoff.x+=gorig.x;
+		mgoff.y*=scale;
+		mgoff.y+=gorig.y;
+		setColor(WHITE);
+		drawCrosshairCoord(mgoff, scale);
+}
+
 void drawGrid(const Offset off, const uint scale)
 {
 	const uint xoff = off.x-(scale*(gridLen.x/2));
@@ -160,4 +191,22 @@ void drawCurrentTile(const Tile currentTile)
 	setColor(BLACK);
 	fillSquare(gfx.xlen/2-(HCTLEN+5), gfx.ylen-(CTLEN+13), CTLEN+10);
 	drawTile(currentTile, gfx.xlen/2-HCTLEN, gfx.ylen-(CTLEN+8), CTLEN, true);
+}
+
+void drawGhost(const Tile t, const Coord pos, const Offset gridOff, const uint scale)
+{
+	Coord gorig = {
+		gridOff.x-(scale*(gridLen.x/2)),
+		gridOff.y-(scale*(gridLen.y/2))
+	};
+	Coord mgoff = mouseGridPos(pos, gridOff, scale);
+	const bool placeable = tileCanPlace(t, mgoff);
+	mgoff.x*=scale;
+	mgoff.x+=gorig.x;
+	mgoff.y*=scale;
+	mgoff.y+=gorig.y;
+	if(placeable)
+		drawTile(t, mgoff.x, mgoff.y, scale, true);
+	setColor(placeable?BLUE:RED);
+	fillBorder(mgoff.x, mgoff.y, scale, scale, scale/16+1);
 }

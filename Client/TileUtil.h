@@ -104,6 +104,19 @@ bool isTileEmpty(const Tile t)
 	return true;
 }
 
+Coord mouseGridPos(const Coord pos, const Offset gridOff, const uint scale)
+{
+	const Coord gorig = {
+		gridOff.x-(scale*(gridLen.x/2)),
+		gridOff.y-(scale*(gridLen.y/2))
+	};
+	const Coord mgoff = {
+		pos.x>=gorig.x?(pos.x - gorig.x)/scale:-1,
+		pos.y>=gorig.y?(pos.y - gorig.y)/scale:-1
+	};
+	return mgoff;
+}
+
 bool isInGridBounds(const Coord pos)
 {
 	return inBound(pos.x, 0, gridLen.x) && inBound(pos.y, 0, gridLen.y);
