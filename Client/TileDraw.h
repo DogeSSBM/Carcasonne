@@ -15,7 +15,7 @@ void drawTile4(const Tile t, const uint x, const uint y, const uint scale, const
 		else
 			setColor(t.land.arr[s]==L_CITY?TBROWN:TGREEN);
 		for(uint i = 0; i < scale/2; i++){
-			drawLineCoords(p, coordShift(p,dirROR(s),i*2));
+			drawLineCoords(p, coordShift(p,dirROR(s),i*2?i*2:1));
 			p = coordShift(p, s, 1);
 			p = coordShift(p, dirROL(s), 1);
 		}
@@ -206,7 +206,7 @@ void drawGhost(const Tile t, const Coord pos, const Offset gridOff, const uint s
 	mgoff.y*=scale;
 	mgoff.y+=gorig.y;
 	if(placeable)
-		drawTile(t, mgoff.x, mgoff.y, scale, true);
+		drawTile(t, mgoff.x, mgoff.y, scale, false);
 	setColor(placeable?BLUE:RED);
 	fillBorder(mgoff.x, mgoff.y, scale, scale, scale/16+1);
 }
